@@ -6,6 +6,7 @@ import { GameLogService } from '../../../core/service/game-log.service'
 import { UserSettings } from '../../../layout/type'
 import { TradeRegexesProvider } from '../../../shared/module/poe/provider/trade-regexes.provider'
 import { PoEAccountService } from '../../../shared/module/poe/service/account/account.service'
+import { GameService } from '../../../core/service/game.service'
 
 interface Command {
   text: string
@@ -28,6 +29,7 @@ export class CommandService {
     private readonly clipboard: ClipboardService,
     private readonly keyboard: KeyboardService,
     private readonly accountService: PoEAccountService,
+    private readonly gameService: GameService,
     gameLogService: GameLogService,
     tradeRegexesProvirder: TradeRegexesProvider
   ) {
@@ -68,6 +70,7 @@ export class CommandService {
   }
 
   public command(command: string, userSettings: UserSettings, preProcessCommand = false, send = true): void {
+    this.gameService.focus()
     if (preProcessCommand) {
       command = this.preProcessCharacterNameCommand(command, userSettings)
       command = this.preProcessLastWhispererCommand(command)
